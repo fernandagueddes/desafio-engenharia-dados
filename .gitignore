@@ -1,2 +1,8 @@
+# Git ignore para o projeto DNC
 .DS_Store
 dnc-pipeline/logs/
+__pycache__/
+*.pyc
+*.pyo
+.vscode/
+*.log
