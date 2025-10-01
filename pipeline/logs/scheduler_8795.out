@@ -7405,3 +7405,4 @@ Arguments: (49713, 1)
 [[34m2025-10-01T08:40:16.342+0000[0m] {[34mscheduler_job_runner.py:[0m1605} INFO[0m - Adopting or resetting orphaned tasks for active dag runs[0m
 [[34m2025-10-01T08:45:16.406+0000[0m] {[34mscheduler_job_runner.py:[0m1605} INFO[0m - Adopting or resetting orphaned tasks for active dag runs[0m
 [[34m2025-10-01T08:50:16.535+0000[0m] {[34mscheduler_job_runner.py:[0m1605} INFO[0m - Adopting or resetting orphaned tasks for active dag runs[0m
+[[34m2025-10-01T08:55:16.737+0000[0m] {[34mscheduler_job_runner.py:[0m1605} INFO[0m - Adopting or resetting orphaned tasks for active dag runs[0m
