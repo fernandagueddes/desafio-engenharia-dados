@@ -1,0 +1,35 @@
+/home/airflow/.local/lib/python3.8/site-packages/airflow/configuration.py:816 DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+/home/airflow/.local/lib/python3.8/site-packages/airflow/configuration.py:742 DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+/home/airflow/.local/lib/python3.8/site-packages/airflow/settings.py:195 DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+/home/airflow/.local/lib/python3.8/site-packages/airflow/models/base.py:71 DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+/home/airflow/.local/lib/python3.8/site-packages/airflow/jobs/scheduler_job_runner.py:224 DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+  ____________       _____________
+ ____    |__( )_________  __/__  /________      __
+____  /| |_  /__  ___/_  /_ __  /_  __ \_ | /| / /
+___  ___ |  / _  /   _  __/ _  / / /_/ /_ |/ |/ /
+ _/_/  |_/_/  /_/    /_/    /_/  \____/____/|__/
+[[34m2025-09-20T04:34:42.582+0000[0m] {[34mexecutor_loader.py:[0m117} INFO[0m - Loaded executor: LocalExecutor[0m
+[2025-09-20 04:34:42 +0000] [1091] [INFO] Starting gunicorn 21.2.0
+[2025-09-20 04:34:42 +0000] [1091] [ERROR] Connection in use: ('::', 8793)
+[2025-09-20 04:34:42 +0000] [1091] [ERROR] Retrying in 1 second.
+[[34m2025-09-20T04:34:42.682+0000[0m] {[34mscheduler_job_runner.py:[0m797} INFO[0m - Starting the scheduler[0m
+[[34m2025-09-20T04:34:42.684+0000[0m] {[34mscheduler_job_runner.py:[0m804} INFO[0m - Processing each file at most -1 times[0m
+[2025-09-20 04:34:43 +0000] [1091] [ERROR] Connection in use: ('::', 8793)
+[2025-09-20 04:34:43 +0000] [1091] [ERROR] Retrying in 1 second.
+[[34m2025-09-20T04:34:44.104+0000[0m] {[34mmanager.py:[0m166} INFO[0m - Launched DagFileProcessorManager with pid: 1225[0m
+[[34m2025-09-20T04:34:44.167+0000[0m] {[34mscheduler_job_runner.py:[0m1605} INFO[0m - Adopting or resetting orphaned tasks for active dag runs[0m
+[[34m2025-09-20T04:34:44.275+0000[0m] {[34msettings.py:[0m61} INFO[0m - Configured default timezone Timezone('UTC')[0m
+/home/airflow/.local/lib/python3.8/site-packages/airflow/settings.py:195 DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+[2025-09-20 04:34:44 +0000] [1091] [ERROR] Connection in use: ('::', 8793)
+[2025-09-20 04:34:44 +0000] [1091] [ERROR] Retrying in 1 second.
+/home/airflow/.local/lib/python3.8/site-packages/airflow/dag_processing/manager.py:407 DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+[2025-09-20 04:34:45 +0000] [1091] [ERROR] Connection in use: ('::', 8793)
+[2025-09-20 04:34:45 +0000] [1091] [ERROR] Retrying in 1 second.
+[2025-09-20 04:34:46 +0000] [1091] [ERROR] Connection in use: ('::', 8793)
+[2025-09-20 04:34:46 +0000] [1091] [ERROR] Retrying in 1 second.
+[2025-09-20 04:34:47 +0000] [1091] [ERROR] Can't connect to ('::', 8793)
+[[34m2025-09-20T04:39:45.200+0000[0m] {[34mscheduler_job_runner.py:[0m1605} INFO[0m - Adopting or resetting orphaned tasks for active dag runs[0m
+[[34m2025-09-20T04:44:47.264+0000[0m] {[34mscheduler_job_runner.py:[0m1605} INFO[0m - Adopting or resetting orphaned tasks for active dag runs[0m
+[[34m2025-09-20T04:49:46.572+0000[0m] {[34mscheduler_job_runner.py:[0m1605} INFO[0m - Adopting or resetting orphaned tasks for active dag runs[0m
+[[34m2025-09-20T04:54:47.441+0000[0m] {[34mscheduler_job_runner.py:[0m1605} INFO[0m - Adopting or resetting orphaned tasks for active dag runs[0m
+[[34m2025-09-20T04:59:47.502+0000[0m] {[34mscheduler_job_runner.py:[0m1605} INFO[0m - Adopting or resetting orphaned tasks for active dag runs[0m
