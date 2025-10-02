@@ -62,7 +62,7 @@ A orquestração é feita com o **Apache Airflow**, executando os processos em c
 
 ##  Como Executar o Projeto
 
-### ✔️ 1. Subir o ambiente com Docker e Airflow:
+###  1. Subir o ambiente com Docker e Airflow:
 
 ```bash
 docker-compose up
@@ -73,7 +73,9 @@ Login padrão:
 Usuário: airflow
 Senha: airflow
 
-✔️ 3. Ativar e rodar as DAGs manualmente.
+---
+
+###  3. Ativar e rodar as DAGs manualmente.
 
 | Camada | Descrição       | Arquivo                                   |
 | ------ | --------------- | ----------------------------------------- |
