@@ -31,7 +31,6 @@ A orquestração é feita com o **Apache Airflow**, executando os processos em c
 │ └── usuarios_por_faixa_status.csv
 └── .gitignore
 
-
 ---
 
 ##  Tecnologias Utilizadas
