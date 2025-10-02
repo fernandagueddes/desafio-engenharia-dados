@@ -15,21 +15,24 @@ A orquestração é feita com o **Apache Airflow**, executando os processos em c
 
 ## Estrutura do Projeto
 
+```
 ├── docker-compose.yml
 ├── requirements.txt
-├── src/ # DAGs do Airflow
-│ ├── pipeline_bronze_to_silver.py
-│ ├── pipeline_silver_to_gold.py
-│ └── pipeline_dnc.py
-├── pipeline/ # logs (ignorados no repositório)
+├── src/                # DAGs do Airflow
+│   ├── pipeline_bronze_to_silver.py
+│   ├── pipeline_silver_to_gold.py
+│   └── pipeline_dnc.py
+├── pipeline/           # logs (ignorados no repositório)
 ├── data/
-│ ├── bronze/
-│ │ └── raw_data.csv
-│ ├── silver/
-│ │ └── usuarios_limpos.csv
-│ └── gold/
-│ └── usuarios_por_faixa_status.csv
+│   ├── bronze/
+│   │   └── raw_data.csv
+│   ├── silver/
+│   │   └── usuarios_limpos.csv
+│   └── gold/
+│       └── usuarios_por_faixa_status.csv
 └── .gitignore
+```
+
 
 ---
 
