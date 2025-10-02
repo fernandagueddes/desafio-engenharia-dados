@@ -1,15 +1,15 @@
 Pipeline ETL com Apache Airflow
-
-Este projeto foi desenvolvido como parte de um desafio de Engenharia de Dados. O objetivo é construir um pipeline completo utilizando o Apache Airflow, simulando as camadas Bronze, Silver e Gold no processamento de dados.
+Este projeto foi desenvolvido como parte de um desafio de Engenharia de Dados. O objetivo é simular um pipeline completo utilizando o Apache Airflow, aplicando as camadas Bronze, Silver e Gold no processamento de dados. A orquestração é feita em contêineres Docker.
 
 ## Objetivo do Projeto
 
-Implementar um pipeline que:
-1. **Extrai** dados brutos (camada Bronze);
-2. **Transforma e limpa** (camada Silver);
-3. **Agrega e trata** os dados para consumo analítico (camada Gold).
+O pipeline implementa as seguintes etapas:
+Extração (Bronze): Leitura de dados brutos.
+Transformação e limpeza (Silver): Tratamento dos dados.
+Agregação (Gold): Preparação para consumo analítico.
 
 A orquestração é feita com o **Apache Airflow**, executando os processos em contêineres Docker.
+
 
 ---
 
@@ -62,13 +62,16 @@ A orquestração é feita com o **Apache Airflow**, executando os processos em c
 
 ##  Como Executar o Projeto
 
+Pré-requisitos
+Certifique-se de ter o Docker e o Docker Compose instalados.
+
+Subir o ambiente com Docker e Airflow:
+
 ###  1. Subir o ambiente com Docker e Airflow:
 
-```bash
 docker-compose up
 
-http://localhost:8080
-
+Acesse o Airflow em: http://localhost:8080
 Login padrão:
 Usuário: airflow
 Senha: airflow
