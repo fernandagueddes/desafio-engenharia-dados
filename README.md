@@ -34,7 +34,7 @@ A orquestração é feita com o **Apache Airflow**, executando os processos em c
 
 ---
 
-## ✅ Tecnologias Utilizadas
+##  Tecnologias Utilizadas
 
 - Python  
 - Apache Airflow  
@@ -47,12 +47,12 @@ A orquestração é feita com o **Apache Airflow**, executando os processos em c
 
 ##  Etapas da Pipeline
 
-### 🔹 1. Bronze → Silver (`pipeline_bronze_to_silver.py`)
+###  1. Bronze → Silver (`pipeline_bronze_to_silver.py`)
 - Lê dados brutos do CSV;
 - Normaliza e limpa campos;
 - Salva em `data/silver/`.
 
-### 🔹 2. Silver → Gold (`pipeline_silver_to_gold.py`)
+###  2. Silver → Gold (`pipeline_silver_to_gold.py`)
 - Agrupa os dados por faixas etárias e status;
 - Gera tabela final em `data/gold/`.
 
