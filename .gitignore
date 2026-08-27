@@ -1,8 +1,18 @@
-# Git ignore para o projeto DNC
+# macOS
 .DS_Store
-dnc-pipeline/logs/
+
+# Airflow logs
+pipeline/logs/
+*.log
+*.out
+
+# Python
 __pycache__/
 *.pyc
 *.pyo
+
+# VS Code
 .vscode/
-*.log
+
+# Environment variables
+.env
