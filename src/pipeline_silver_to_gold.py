@@ -1,53 +1,150 @@
 from datetime import datetime
 from pathlib import Path
+
 import pandas as pd
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 
-# Caminhos (host montado em /opt/airflow/data)
+
+# Paths inside the Airflow container
 DATA_DIR = Path("/opt/airflow/data")
-SILVER = DATA_DIR / "silver" / "usuarios_limpos.csv"
-GOLD   = DATA_DIR / "gold"   / "usuarios_por_faixa_status.csv"
+
+SILVER_FILE = DATA_DIR / "silver" / "usuarios_limpos.csv"
+GOLD_FILE = DATA_DIR / "gold" / "usuarios_por_faixa_status.csv"
+
 
 def silver_to_gold():
-    # 1) Ler dados da Silver
-    df = pd.read_csv(SILVER)
+    """
+    Read cleaned data from the Silver layer,
+    aggregate users by age band and status,
+    and save the result in the Gold layer.
+    """
 
-    # 2) Normalizar/garantir coluna de status (active/inactive)
-    df["status"] = df["status"].astype(str).str.strip().str.lower()
-    df["status"] = df["status"].where(df["status"].isin(["active", "inactive"]), "inactive")
+    # Validate input file
+    if not SILVER_FILE.exists():
+        raise FileNotFoundError(
+            f"Silver data file not found: {SILVER_FILE}"
+        )
 
-    # 3) Criar faixas etárias de 0-10, 11-20, 21-30, ... até 100+
-    bins = list(range(0, 101, 10)) + [200]   # 0..10..100 e um topo 200 pra capturar idades maiores
-    labels = [f"{i}-{i+10}" for i in range(0, 100, 10)] + ["100+"]
+    # Read Silver data
+    df = pd.read_csv(SILVER_FILE)
 
-    # Corrigido: usar "age" (não "idade")
-    df["age_band"] = pd.cut(df["age"], bins=bins, right=True, include_lowest=True, labels=labels)
+    # Validate required columns
+    required_columns = ["age", "status"]
 
-    # 4) Agregar: contagem por faixa etária e status
-    agg = (
-        df.groupby(["age_band", "status"])
-          .size()
-          .reset_index(name="qtd_usuarios")
-          .sort_values(["age_band", "status"])
+    missing_columns = [
+        column
+        for column in required_columns
+        if column not in df.columns
+    ]
+
+    if missing_columns:
+        raise ValueError(
+            f"Missing required columns: {missing_columns}"
+        )
+
+    # Normalize status
+    df["status"] = (
+        df["status"]
+        .astype(str)
+        .str.strip()
+        .str.lower()
     )
 
-    # 5) Garantir pasta gold e salvar CSV
-    GOLD.parent.mkdir(parents=True, exist_ok=True)
-    agg.to_csv(GOLD, index=False)
+    # Keep only expected status values
+    df["status"] = df["status"].where(
+        df["status"].isin(["active", "inactive"]),
+        "inactive",
+    )
 
-default_args = {
-    "owner": "airflow",
-}
+    # Convert age to numeric
+    df["age"] = pd.to_numeric(
+        df["age"],
+        errors="coerce",
+    )
+
+    # Remove invalid ages
+    df = df.dropna(subset=["age"]).copy()
+    df = df[df["age"] >= 0].copy()
+
+    # Create age bands
+    bins = [
+        -1,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        float("inf"),
+    ]
+
+    labels = [
+        "0-10",
+        "11-20",
+        "21-30",
+        "31-40",
+        "41-50",
+        "51-60",
+        "61-70",
+        "71-80",
+        "81-90",
+        "91-100",
+        "101+",
+    ]
+
+    df["age_band"] = pd.cut(
+        df["age"],
+        bins=bins,
+        labels=labels,
+    )
+
+    # Aggregate users by age band and status
+    aggregated_df = (
+        df.groupby(
+            ["age_band", "status"],
+            observed=False,
+        )
+        .size()
+        .reset_index(name="user_count")
+        .sort_values(
+            ["age_band", "status"]
+        )
+    )
+
+    # Create Gold directory if necessary
+    GOLD_FILE.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    # Save aggregated data
+    aggregated_df.to_csv(
+        GOLD_FILE,
+        index=False,
+    )
+
+    print(
+        f"Gold layer created successfully: "
+        f"{GOLD_FILE} | Rows: {len(aggregated_df)}"
+    )
+
 
 with DAG(
     dag_id="silver_to_gold",
+    description=(
+        "Aggregate Silver data by age band "
+        "and subscription status"
+    ),
     start_date=datetime(2025, 1, 1),
-    schedule_interval=None,
+    schedule=None,
     catchup=False,
-    default_args=default_args,
-    tags=["dnc", "etl", "silver->gold"],
+    tags=["etl", "silver", "gold"],
 ) as dag:
 
     process_silver_to_gold = PythonOperator(
