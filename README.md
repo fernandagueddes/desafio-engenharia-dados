@@ -60,8 +60,8 @@ Main operations:
 - Validates required columns
 - Normalizes subscription status
 - Validates age values
-- Creates age groups
-- Aggregates users by age group and subscription status
+- Creates age bands
+- Aggregates users by age band and subscription status
 - Stores the final dataset in the Gold layer
 
 ## Project Structure
@@ -116,8 +116,8 @@ Make sure you have installed:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/fernandagueddes/desafio-engenharia-dados.git
-cd desafio-engenharia-dados
+git clone https://github.com/fernandagueddes/airflow-etl-data-pipeline.git
+cd airflow-etl-data-pipeline
 ```
 
 ### 2. Start the environment
@@ -126,7 +126,12 @@ cd desafio-engenharia-dados
 docker compose up
 ```
 
-The Docker environment starts PostgreSQL and Apache Airflow.
+The Docker environment starts:
+
+- PostgreSQL
+- Airflow initialization service
+- Airflow webserver
+- Airflow scheduler
 
 ### 3. Access Apache Airflow
 
@@ -134,6 +139,13 @@ Open:
 
 ```text
 http://localhost:8081
+```
+
+Default credentials:
+
+```text
+Username: airflow
+Password: airflow
 ```
 
 ### 4. Run the pipelines
@@ -146,7 +158,7 @@ bronze_to_silver
 silver_to_gold
 ```
 
-The first DAG cleans and transforms the raw dataset into the Silver layer.
+The first DAG validates, cleans, and transforms the raw dataset into the Silver layer.
 
 The second DAG aggregates the processed data and generates the Gold dataset.
 
@@ -184,7 +196,8 @@ This project demonstrates practical experience with:
 - Workflow orchestration with Apache Airflow
 - Data cleaning and transformation with Pandas
 - Data quality validation
-- Layered data architecture
+- Bronze, Silver, and Gold data architecture
 - Dockerized data environments
+- PostgreSQL integration with Airflow
 - Data aggregation for analytical consumption
-- Version control with Git
+- Git version control
