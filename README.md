@@ -1,95 +1,190 @@
-Pipeline ETL com Apache Airflow
-Este projeto foi desenvolvido como parte de um desafio de Engenharia de Dados. O objetivo é simular um pipeline completo utilizando o Apache Airflow, aplicando as camadas Bronze, Silver e Gold no processamento de dados. A orquestração é feita em contêineres Docker.
+# ETL Data Pipeline with Apache Airflow
 
-## Objetivo do Projeto
+An end-to-end ETL data pipeline built with **Python, Apache Airflow, Pandas, and Docker**, following a **Bronze, Silver, and Gold layered architecture**.
 
-O pipeline implementa as seguintes etapas:
-Extração (Bronze): Leitura de dados brutos.
-Transformação e limpeza (Silver): Tratamento dos dados.
-Agregação (Gold): Preparação para consumo analítico.
+The project demonstrates how raw data can be validated, cleaned, transformed, and aggregated through orchestrated data pipelines to produce analytics-ready datasets.
 
-A orquestração é feita com o **Apache Airflow**, executando os processos em contêineres Docker.
+## Architecture
 
-
----
-
-## Estrutura do Projeto
-
+```text
+Raw CSV Data
+     │
+     ▼
+┌─────────────┐
+│   BRONZE    │
+│  Raw Data   │
+└──────┬──────┘
+       │
+       │ Airflow
+       ▼
+┌─────────────┐
+│   SILVER    │
+│ Clean Data  │
+└──────┬──────┘
+       │
+       │ Airflow
+       ▼
+┌─────────────┐
+│    GOLD     │
+│ Aggregated  │
+│    Data     │
+└─────────────┘
 ```
+
+## Pipeline Overview
+
+The pipeline is divided into two main processing stages.
+
+### Bronze → Silver
+
+The `pipeline_bronze_to_silver.py` DAG processes the raw dataset and applies data quality and transformation rules.
+
+Main operations:
+
+- Validates the existence of the source file
+- Validates required columns
+- Removes records with missing critical values
+- Filters invalid email addresses
+- Converts date fields
+- Calculates user age
+- Normalizes subscription status
+- Stores the cleaned dataset in the Silver layer
+
+### Silver → Gold
+
+The `pipeline_silver_to_gold.py` DAG transforms the cleaned dataset into an analytics-ready aggregated table.
+
+Main operations:
+
+- Validates the Silver dataset
+- Validates required columns
+- Normalizes subscription status
+- Validates age values
+- Creates age groups
+- Aggregates users by age group and subscription status
+- Stores the final dataset in the Gold layer
+
+## Project Structure
+
+```text
+.
+├── pipeline/
+│   └── data/
+│       ├── bronze/
+│       │   └── raw_data.csv
+│       ├── silver/
+│       │   └── usuarios_limpos.csv
+│       └── gold/
+│           └── usuarios_por_faixa_status.csv
+│
+├── src/
+│   ├── pipeline_bronze_to_silver.py
+│   └── pipeline_silver_to_gold.py
+│
+├── .gitignore
 ├── docker-compose.yml
 ├── requirements.txt
-├── src/                # DAGs do Airflow
-│   ├── pipeline_bronze_to_silver.py
-│   ├── pipeline_silver_to_gold.py
-│   └── pipeline_dnc.py
-├── pipeline/           # logs (ignorados no repositório)
-├── data/
-│   ├── bronze/
-│   │   └── raw_data.csv
-│   ├── silver/
-│   │   └── usuarios_limpos.csv
-│   └── gold/
-│       └── usuarios_por_faixa_status.csv
-└── .gitignore
+└── README.md
 ```
 
+## Technologies
 
----
+- **Python** — data processing and pipeline logic
+- **Pandas** — data cleaning, validation, transformation, and aggregation
+- **Apache Airflow** — workflow orchestration
+- **Docker** — containerized execution environment
+- **PostgreSQL** — Airflow metadata database
+- **Git & GitHub** — version control and project documentation
 
-##  Tecnologias Utilizadas
+## Data Layers
 
-- Python  
-- Apache Airflow  
-- Docker  
-- Pandas  
-- Linux/CLI  
-- Git e GitHub  
+| Layer | Purpose | Output |
+|---|---|---|
+| Bronze | Raw source data | `raw_data.csv` |
+| Silver | Cleaned and validated data | `usuarios_limpos.csv` |
+| Gold | Aggregated analytics-ready data | `usuarios_por_faixa_status.csv` |
 
----
+## Running the Project
 
-##  Etapas da Pipeline
+### Prerequisites
 
-###  1. Bronze → Silver (`pipeline_bronze_to_silver.py`)
-- Lê dados brutos do CSV;
-- Normaliza e limpa campos;
-- Salva em `data/silver/`.
+Make sure you have installed:
 
-###  2. Silver → Gold (`pipeline_silver_to_gold.py`)
-- Agrupa os dados por faixas etárias e status;
-- Gera tabela final em `data/gold/`.
+- Docker
+- Docker Compose
 
----
+### 1. Clone the repository
 
-##  Como Executar o Projeto
+```bash
+git clone https://github.com/fernandagueddes/desafio-engenharia-dados.git
+cd desafio-engenharia-dados
+```
 
-Pré-requisitos
-Certifique-se de ter o Docker e o Docker Compose instalados.
+### 2. Start the environment
 
-Subir o ambiente com Docker e Airflow:
+```bash
+docker compose up
+```
 
-###  1. Subir o ambiente com Docker e Airflow:
+The Docker environment starts PostgreSQL and Apache Airflow.
 
-docker-compose up
+### 3. Access Apache Airflow
 
-Acesse o Airflow em: http://localhost:8080
-Login padrão:
-Usuário: airflow
-Senha: airflow
+Open:
 
----
+```text
+http://localhost:8081
+```
 
-###  3. Ativar e rodar as DAGs manualmente.
+### 4. Run the pipelines
 
-| Camada | Descrição       | Arquivo                                   |
-| ------ | --------------- | ----------------------------------------- |
-| Bronze | Dados brutos    | `data/bronze/raw_data.csv`                |
-| Silver | Dados limpos    | `data/silver/usuarios_limpos.csv`         |
-| Gold   | Dados agregados | `data/gold/usuarios_por_faixa_status.csv` |
+In the Airflow interface, run the DAGs in the following order:
 
+```text
+bronze_to_silver
+        ↓
+silver_to_gold
+```
 
+The first DAG cleans and transforms the raw dataset into the Silver layer.
 
+The second DAG aggregates the processed data and generates the Gold dataset.
 
+## Data Flow
 
+```text
+raw_data.csv
+      │
+      ▼
+Bronze Layer
+      │
+      ▼
+Data Validation
+Data Cleaning
+Data Transformation
+      │
+      ▼
+Silver Layer
+usuarios_limpos.csv
+      │
+      ▼
+Age Band Creation
+Aggregation by Status
+      │
+      ▼
+Gold Layer
+usuarios_por_faixa_status.csv
+```
 
+## Skills Demonstrated
 
+This project demonstrates practical experience with:
 
+- ETL pipeline development
+- Workflow orchestration with Apache Airflow
+- Data cleaning and transformation with Pandas
+- Data quality validation
+- Layered data architecture
+- Dockerized data environments
+- Data aggregation for analytical consumption
+- Version control with Git
